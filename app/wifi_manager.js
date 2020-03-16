@@ -219,6 +219,26 @@ module.exports = function() {
                     _reboot_wireless_network(config.wifi_interface, next_step);
                 },
 
+		function unmask_hostapd(next_step) {
+		    exec("sudo systemctl unmask hostapd", (error, stdout, stderr) => {
+		        if (!error) console.log("... hostpad unmask!");
+		        next_step();
+		    });
+		},
+		function enable_hostapd(next_step) {
+		    exec("sudo systemctl enable hostapd", (error, stdout, stderr) => {
+		        if (!error) console.log("... hostpad enable!");
+		        next_step();
+		    });
+		},
+		function start_hostapd(next_step) {
+		    exec("sudo systemctl start hostapd", (error, stdout, stderr) => {
+		        if (!error) console.log("... hostpad start!");
+		        next_step();
+		    });
+		},
+
+		/*
                 function restart_hostapd_service(next_step) {
                     exec("sudo systemctl restart hostapd", function(error, stdout, stderr) {
                         //console.log(stdout);
@@ -226,6 +246,7 @@ module.exports = function() {
                         next_step();
                     });
                 },
+		*/
                 
                 function restart_dnsmasq_service(next_step) {
                     exec("sudo systemctl restart dnsmasq", function(error, stdout, stderr) {
